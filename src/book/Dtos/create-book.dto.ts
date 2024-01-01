@@ -20,4 +20,7 @@ author: string
 @IsNotEmpty()
 @IsBoolean()
 isReserved: Boolean
+
+@IsOptional()
+file?: any;
 }

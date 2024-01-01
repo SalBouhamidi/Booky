@@ -21,5 +21,8 @@ export class Book{
 
     @Prop({required:true, default:false})
     isReserved: Boolean
+
+    @Prop({required:false})
+    imageUrl?: string;
 }
 export const BookSchema = SchemaFactory.createForClass(Book)
