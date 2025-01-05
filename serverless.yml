@@ -1,0 +1,40 @@
+service: nest-lambda-app
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  credentials:
+    accessKeyId: YOUR_ACCESS_KEY
+    secretAccessKey: YOUR_SECRET_KEY
+
+  memorySize: 512
+  timeout: 30
+  stage: dev
+  environment:
+    NODE_ENV: production
+
+functions:
+  api:
+    handler: lambda.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
+          cors: true
+      - http:
+          path: /health
+          method: get
+
+package:
+  include:
+    - dist/**
+    - node_modules/**
+    - package.json
+    - tsconfig.json
+    - serverless.yml
+
+plugins:
+  - serverless-offline
