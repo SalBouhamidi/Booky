@@ -15,11 +15,10 @@ import { S3Service } from '../common/services/s3/s3.service';
 export class BookService {
     constructor(
         @InjectModel(Book.name) private Bookmodel: Model<BookDocument>,
-        private readonly s3Service: S3Service,
+        // private readonly s3Service: S3Service,
     ) { }
     async addNewBook(createnewbook: createBookDtos): Promise<string | responseBookDtos> {
         try {
-            // createBookdtos.administrator = new Types.ObjectId(userId);
             let newBook = new this.Bookmodel(createnewbook);
             let checkIfExist = await this.Bookmodel.findOne({
                 name: createnewbook.name,
@@ -100,6 +99,24 @@ export class BookService {
             return plainToInstance(responseBookDtos, updatebookDtos);
         } catch (e) {
             return `Error smth bad happend,${e}`
+        }
+    }
+
+    async searchBooks(name?: string, author?: string): Promise<Book[]> {
+        console.log('heeeeeeeeeeeeeeeeeeeeeeeeere',name);
+        try {
+            const query: any = {};
+            if (name) {
+                query.name = { $regex: name, $options: 'i' };
+            }
+            if (author) {
+                query.author = { $regex: author, $options: 'i' };
+            }
+            const books = await this.Bookmodel.find(query);
+            return books;
+        } catch (e) {
+            console.log('Error searching books:', e);
+            throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
