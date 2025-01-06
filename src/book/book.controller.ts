@@ -1,5 +1,5 @@
 import { BookService } from './book.service';
-import { Post, Body, Param, Get, Put, Controller, Delete } from '@nestjs/common';
+import { Post, Body, Param, Get, Put, Controller, Delete, Query } from '@nestjs/common';
 import { createBookDtos } from './Dtos/create-book.dto';
 import { UpdateBookDto } from './Dtos/update-book.dto';
 
@@ -8,6 +8,11 @@ import { UpdateBookDto } from './Dtos/update-book.dto';
 @Controller('book')
 export class BookController {
     constructor(private readonly bookService: BookService) { }
+    @Get('search')
+    async searchBooks(@Query('name') name?: string, @Query('author') author?: string) {
+        // console.log('heeeeeeeeeeeeeeeeeeeeeeeeere',name);
+        return await this.bookService.searchBooks(name, author);
+    }
     @Post()
     async AddNewBook(@Body() createBookdtos: createBookDtos){
         try{
@@ -29,6 +34,7 @@ export class BookController {
     async updateBook(@Param('bookId') bookId:string,@Body() udatebookDto:UpdateBookDto){
         return await this.bookService.updateBook(bookId,udatebookDto)
     }
+
 
 
 }
