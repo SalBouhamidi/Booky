@@ -8,7 +8,7 @@ import { Types } from 'mongoose';
 import { responseBookDtos } from './Dtos/reponse-create-book.dto';
 import { plainToInstance } from 'class-transformer';
 import mongoose from 'mongoose';
-import { S3Service } from '../common/services/s3/s3.service';
+// import { S3Service } from '../common/services/s3/s3.service';
 
 
 @Injectable()
