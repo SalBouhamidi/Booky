@@ -103,7 +103,7 @@ export class BookService {
     }
 
     async searchBooks(name?: string, author?: string): Promise<Book[]> {
-        console.log('heeeeeeeeeeeeeeeeeeeeeeeeere',name);
+        // console.log('heeeeeeeeeeeeeeeeeeeeeeeeere',name);
         try {
             const query: any = {};
             if (name) {
@@ -116,6 +116,17 @@ export class BookService {
             return books;
         } catch (e) {
             console.log('Error searching books:', e);
+            throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async getAllBooks(): Promise<Book[]> {
+        try {
+            const books = await this.Bookmodel.find();
+            // console.log('books', books);
+            return books;
+        } catch (e) {
+            console.log('error books:', e);
             throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
