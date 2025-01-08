@@ -3,18 +3,21 @@ import { Post, Body, Param, Get, Put, Controller, Delete, Query } from '@nestjs/
 import { createBookDtos } from './Dtos/create-book.dto';
 import { UpdateBookDto } from './Dtos/update-book.dto';
 
-
-
 @Controller('book')
 export class BookController {
     constructor(private readonly bookService: BookService) { }
-    @Get('search')
+    @Get('/search')
     async searchBooks(@Query('name') name?: string, @Query('author') author?: string) {
-        // console.log('heeeeeeeeeeeeeeeeeeeeeeeeere',name);
         return await this.bookService.searchBooks(name, author);
+    }
+    @Get('/all')
+    async getAllBooks() {
+        console.log("enter");
+        return await this.bookService.getAllBooks();
     }
     @Post()
     async AddNewBook(@Body() createBookdtos: createBookDtos){
+                // console.log('booooook');
         try{
             let result  = await this.bookService.addNewBook(createBookdtos);
             return result
@@ -22,19 +25,18 @@ export class BookController {
             return `"ops smth went wrong", ${e}`
         }
     }
-    @Delete(':bookId')
+    @Delete('/:bookId')
     async DeleteyourBook(@Param('bookId') bookId:string){
+        console.log('bookId',bookId);
         return await this.bookService.DeleteBook(bookId)
     }
-    @Get(':bookId')
+    @Get('/:bookId')
     async showThisBook(@Param('bookId') bookId:string){
         return await this.bookService.showThisBook(bookId);
     }
-    @Put(':bookId')
+    @Put('/:bookId')
     async updateBook(@Param('bookId') bookId:string,@Body() udatebookDto:UpdateBookDto){
         return await this.bookService.updateBook(bookId,udatebookDto)
     }
-
-
 
 }
